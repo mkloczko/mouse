@@ -29,7 +29,10 @@ Layer<Ret> forwardProp(const Layer<In> & in, const Weights<Ret, In+1> & weights)
     input_biased.template bottomRows<In>() = in;
 
     auto rety = weights * input_biased;
-    return rety.unaryExpr([](double a){return 1.0 / ( 1.0 + std::exp(-a));});
+    return rety.unaryExpr([](double a){
+        double ret = 1.0 / ( 1.0 + std::exp(-a));
+        return ret;
+    });
 };
 
 template <int Ret, int In>

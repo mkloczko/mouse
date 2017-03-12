@@ -83,7 +83,7 @@ void gradientCheck(){
 
 void gradientCheckRegularised(){
     double error = 0;
-    rc::check("Checking the backpropagation algorithm with regularisation ..."
+    rc::check("Checking the backpropagation + regularisation algorithm ..."
             ,[&error]() {
                 unsigned long no_samples = *rc::gen::inRange(100,1000);
 
@@ -91,7 +91,7 @@ void gradientCheckRegularised(){
                 vector<int> xs_int = *rc::gen::container<vector<int>>(no_samples * 4, rc::gen::inRange<int>(0,1000));
                 vector<int> ys_int = *rc::gen::container<vector<int>>(no_samples * 2, rc::gen::inRange<int>(0,1));
 
-                int    range_int = *rc::gen::inRange(1,100);
+                int    range_int = *rc::gen::inRange(1,1000);
                 double range     = ((double)range_int)/10.0;
 
                 //Convert into the sets

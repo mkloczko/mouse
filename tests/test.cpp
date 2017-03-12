@@ -7,5 +7,5 @@ int main(){
 //    gradientCheck();
 //    gradientCheckRegularised();
 
-    gradientDescent(10);
+    gradientDescent(100);
 }
