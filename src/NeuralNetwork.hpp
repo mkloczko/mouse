@@ -32,6 +32,17 @@ Layer<Ret> forwardProp(const Layer<In> & in, const Weights<Ret, In+1> & weights)
     return rety.unaryExpr([](double a){return 1.0 / ( 1.0 + std::exp(-a));});
 };
 
+template <int Ret, int In>
+TrainingSet<Ret> forwardProp(const TrainingSet<In> & in, const Weights<Ret, In+1> & weights){
+    //Set the input layer with bias.
+    TrainingSet<In+1> input_biased(In+1, in.cols());
+    input_biased.row(0).setOnes();
+    input_biased.template bottomRows<In>() = in;
+
+    auto rety = weights * input_biased;
+    return rety.unaryExpr([](double a){return 1.0 / ( 1.0 + std::exp(-a));});
+};
+
 
 //Adding bias to layers.
 template <int N>
@@ -51,7 +62,8 @@ struct NeuralNetwork{
     Weights<5, 5> weights_0 = 0.001 * Weights<5, 5>::Random();
     Weights<2, 6> weights_1 = 0.001 * Weights<2, 6>::Random();
 
-    Layer<2> compute(Layer<4> input) const;
+    Layer<2>       compute(Layer<4> input) const;
+    TrainingSet<2> compute(TrainingSet<4> input) const;
 };
 
 //Calculates the derivative of the cost function based on the back propagation algorithm

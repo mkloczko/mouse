@@ -3,29 +3,36 @@
 //
 
 #include "NeuralNetwork.hpp"
+#include <iostream>
+
+using std::cerr;
+using std::endl;
 
 Layer<2> NeuralNetwork::compute(Layer<4> input) const{
     return forwardProp(forwardProp(input, weights_0), weights_1);
 }
 
+TrainingSet<2> NeuralNetwork::compute(TrainingSet<4> input) const{
+    return forwardProp(forwardProp(input, weights_0), weights_1);
+}
+
+//The function has to be numerically robust.
 double costFunction( const NeuralNetwork & network
         , TrainingSet<4> training
         , TrainingSet<2> values
         , double lambda) {
-    double sum = 0;
-    for (unsigned long i = 0; i < training.cols(); i++){
-        Layer<2> h = network.compute(training.col(i));
-        for (unsigned long k = 0; k < 2; k++) {
-            sum += values(k, i)* std::log(h(k));
-            sum += (1 - values(k, i))* std::log((1 - h(k)));
-        }
-    }
-    sum = -sum/training.cols();
+    //Cost function
+    auto hs     = network.compute(training);
+    auto part1 = values.array() * hs.array().log() ;
+    auto part2 = (1 - values.array()) * (1 - hs.array()).array().log();
+    auto elems = - (part1 + part2);
 
-    //Reguralisation
+    double sum = elems.sum()/training.cols();
+
+    //Regularisation
     double reg = 0;
-    reg += network.weights_0.unaryExpr([](double a){return a * a;}).sum();
-    reg += network.weights_1.unaryExpr([](double a){return a * a;}).sum();
+    reg += network.weights_0.rightCols<4>().unaryExpr([](double a){return a * a;}).sum();
+    reg += network.weights_1.rightCols<5>().unaryExpr([](double a){return a * a;}).sum();
     reg = reg/(2*training.cols());
     reg = reg * lambda;
 

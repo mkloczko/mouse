@@ -8,8 +8,8 @@
 
 #include "../src/NeuralNetwork.hpp"
 
-//gradientChecking(const NeuralNetwork & network){
-//
-//}
+
+void gradientCheck();
+void gradientCheckRegularised();
 
 #endif //CHALLENGE_NEURALNETWORKTEST_HPP
