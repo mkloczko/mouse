@@ -155,3 +155,67 @@ void gradientCheckRegularised(){
             });
     cerr << "The maximum difference between the algorithms was: " << error << endl;
 }
+
+void gradientDescent(unsigned long max_iters){
+    double max_difference = 0;
+    int ix = 0;
+    rc::check("Checking whether gradient descent looks for local minima..."
+             , [&ix, &max_difference, max_iters](){
+                if(ix % 10 == 0){
+                    cerr << ix << "...";
+                }
+                if(ix == 99){
+                    cerr << endl;
+                }
+                ix +=1;
+                unsigned long no_samples = *rc::gen::inRange(50,500);
+
+                //Since rapid check does not support doubles, we do this:
+                vector<int> xs_int = *rc::gen::container<vector<int>>(no_samples * 4, rc::gen::inRange<int>(0,1000));
+                vector<int> ys_int = *rc::gen::container<vector<int>>(no_samples * 2, rc::gen::inRange<int>(0,1));
+
+                int    range_int = *rc::gen::inRange(1,100);
+                double range     = ((double)range_int)/10.0;
+
+                //Convert into the sets
+                NeuralNetwork start;
+                start.weights_0 = range * Weights<5,5>::Random();
+                start.weights_1 = range * Weights<2,6>::Random();
+                TrainingSet<4> x_set(4,no_samples);
+                TrainingSet<2> y_set(2,no_samples);
+
+                for(unsigned long i = 0; i < no_samples; i++){
+                    x_set(0,i) = ((double)xs_int[i + 0])/1000.0;
+                    x_set(1,i) = ((double)xs_int[i + 1])/1000.0;
+                    x_set(2,i) = ((double)xs_int[i + 2])/1000.0;
+                    x_set(3,i) = ((double)xs_int[i + 3])/1000.0;
+
+                    y_set(0,i) = ((double)ys_int[i + 0]);
+                    y_set(1,i) = ((double)ys_int[i + 1]);
+                }
+
+
+                int lambda_int = *rc::gen::inRange(0,10000);
+                double lambda  = ((double)lambda_int)/10;
+
+                //There can be a case where alpha is too big and it can't converge.
+                //Hopefully we won't hit it with a really small alpha.
+                double alphas[5] = {0.01, 0.0025, 0.00025, 0.0000001};
+
+                double at_first = costFunction(start       , x_set, y_set, lambda);
+                for (double alpha : alphas){
+                    NeuralNetwork local_minima = gradient_descent(start, x_set, y_set, lambda, alpha, 0.001, max_iters);
+
+                    double and_now  = costFunction(local_minima, x_set, y_set, lambda);
+
+                    if(and_now <= at_first) {
+                        max_difference = std::max(max_difference, at_first-and_now);
+                        return true;
+                    }
+                }
+
+                cerr << endl;
+                return false;
+            });
+    cerr << "The maximum difference found for the cost functions was: " << max_difference << endl;
+}

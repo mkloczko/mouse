@@ -84,3 +84,12 @@ NeuralNetwork numerical_derivative( const NeuralNetwork & thetas
                                   , TrainingSet<2> values
                                   , double lambda = 0
                                   , double epsilon = 0.001);
+
+NeuralNetwork gradient_descent( const NeuralNetwork & network
+                              , TrainingSet<4> training
+                              , TrainingSet<2> values
+                              , double lambda = 0
+                              , double alpha = 0.05
+                              , double epsilon = 0.001
+                              , int    max_iter = 1000
+                              );

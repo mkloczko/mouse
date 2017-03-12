@@ -12,4 +12,6 @@
 void gradientCheck();
 void gradientCheckRegularised();
 
+void gradientDescent(unsigned long max_iters = 100);
+
 #endif //CHALLENGE_NEURALNETWORKTEST_HPP

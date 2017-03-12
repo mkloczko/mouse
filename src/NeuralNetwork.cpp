@@ -122,3 +122,42 @@ NeuralNetwork numerical_derivative( const NeuralNetwork & thetas
 
     return ret;
 }
+
+NeuralNetwork gradient_descent( const NeuralNetwork & network
+                              , TrainingSet<4> training
+                              , TrainingSet<2> values
+                              , double lambda
+                              , double alpha
+                              , double epsilon
+                              , int    max_iter
+                              ){
+    NeuralNetwork prev    = network;
+    NeuralNetwork current = network;
+    NeuralNetwork diffs;
+    NeuralNetwork thetas = backpropagation(current, training, values, lambda);
+    current.weights_0 -= alpha*thetas.weights_0;
+    current.weights_1 -= alpha*thetas.weights_1;
+
+    unsigned long ix = 0;
+    bool converged = true;
+    converged = converged && (current.weights_0 - prev.weights_0).array().abs().maxCoeff() < epsilon;
+    converged = converged && (current.weights_1 - prev.weights_1).array().abs().maxCoeff() < epsilon;
+
+    while(ix < max_iter && !converged ){
+        prev = current;
+        thetas = backpropagation(current, training, values, lambda);
+
+        current.weights_0 -= alpha*thetas.weights_0;
+        current.weights_1 -= alpha*thetas.weights_1;
+
+        converged = true;
+        converged = converged && (current.weights_0 - prev.weights_0).array().abs().maxCoeff() < epsilon;
+        converged = converged && (current.weights_1 - prev.weights_1).array().abs().maxCoeff() < epsilon;
+
+        ix +=1;
+    }
+
+
+    return current;
+
+}

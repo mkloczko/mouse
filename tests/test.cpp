@@ -4,6 +4,8 @@
 #include "NeuralNetworkTest.hpp"
 
 int main(){
-    gradientCheck();
-    gradientCheckRegularised();
+//    gradientCheck();
+//    gradientCheckRegularised();
+
+    gradientDescent(10);
 }
