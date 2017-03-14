@@ -8,26 +8,27 @@
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <array>
 
 using std::cerr;
 using std::endl;
+using std::array;
 
-template < int Bins>
+template <int Bins>
 struct Histogram{
 
     static constexpr double Start = 0.0;
     static constexpr double End   = 1.0;
 
-    void normalize(){
-        unsigned long no_elems = 0;
+    array<double,Bins> normalized(){
 
-        how_much = ((double) size )/ (End-Start);
+        array<double,Bins> ret;
 
         for(unsigned long i = 0; i < Bins; i++){
-            no_elems = (unsigned long)std::ceil(bins[i]/how_much);
-            bins[i] = no_elems * how_much;
+            ret[i] = (double)bins[i]/(double)size;
         }
 
+        return ret;
     }
 
     double median(){
@@ -46,19 +47,14 @@ struct Histogram{
         bool first_found = false;
         bool second_found = false;
         for(unsigned long i = 0; i < Bins && counter > wtf_cpp ; i++ ){
-            counter -= (unsigned long)std::ceil(bins[i]/how_much);
+            counter -= bins[i];
             if(!first_found && counter <= 0){
                 first_found = true;
                 median += Start + i * (End - Start);
-//                cerr << "Found le first median at " << i << "th bin" << endl;
-//                cerr << "Median: " << median << " " << counter << " " << wtf_cpp << endl;
             }
             if(!second_found && size % 2 == 0 && counter <= -1 ) {
                 second_found = true;
                 median += Start + i * (End - Start);
-//                cerr << "Found le second median at " << i << "th bin" << endl;
-//                cerr << "Median: " << median << " " << counter << endl;
-
             }
         }
 
@@ -66,18 +62,16 @@ struct Histogram{
 
     }
 
-    double bins[Bins]  = {0};
+    unsigned long bins[Bins]  = {0};
     unsigned long size =  0;
-    double how_much    =  1;
 
     Histogram& operator+(const double & val){
 
 
-        int which_bin = std::floor((val - Start)/((End-Start)/Bins));
-//        cerr << "And the value " << val << " goes to bin: " << which_bin << ", hm " << how_much << endl;
+        int which_bin = ((val - Start)/((End-Start)/Bins));
 
         which_bin = std::max(std::min(Bins-1, which_bin), 0);
-        bins[which_bin] += how_much;
+        bins[which_bin] += 1;
         size += 1;
         return *this;
     }

@@ -14,6 +14,7 @@
 #include <memory>
 #include <random>
 #include <iterator>
+#include <array>
 
 using std::vector;
 using std::cerr;
@@ -21,6 +22,7 @@ using std::endl;
 using std::string;
 using std::snprintf;
 using std::unique_ptr;
+using std::array;
 
 template <int B>
 void medianTest(){
@@ -38,7 +40,7 @@ void medianTest(){
                 const double S = hist.Start;
                 const double E = hist.End;
 
-                int no_samples      = *inRange<int>(1,1000);
+                int no_samples      = *inRange<int>(1,10000);
                 vector<double> values(no_samples,0);
 //                vector<int> noise_i = *container<vector<int>>(no_samples, inRange<int>(0,99));
                 int median_i        = *inRange<int>(0,B);
@@ -61,8 +63,11 @@ void medianTest(){
                 if( no_samples % 2 == 0){
                     //Generate two values which on average give the median value.
                     //TODO
-                    first_i = median_i;
-                    second_i = median_i;
+                    int max_range = std::min(median_i - max_l, min_r - median_i);
+
+                    first_i = *inRange<int>(median_i - max_range, median_i + max_range + 1);
+
+                    second_i = 2*median_i - first_i;
 
                     values[i+0]  = first_i;
                     values[i+0] += ((double) *inRange<int>(0,99))/100.0;
@@ -104,15 +109,21 @@ void medianTest(){
                     }
                     unsigned long elems_below = 0;
                     unsigned long elems_above = 0;
+                    unsigned long elems_equal = 0;
                     std::for_each(values.begin(), values.end()
-                                 ,[&elems_below, &elems_above, median](const double & a){
+                                 ,[&elems_below, &elems_above, &elems_equal, median]
+                                  (const double & a){
                                 if (a > median)
                                     elems_above += 1;
-                                if (a < median)
+                                else if (a < median)
                                     elems_below += 1;
+                                else
+                                    elems_equal += 1;
                                 return a;
                             });
-                    cerr << "Elements above median: " << elems_above << " , elems below: " << elems_below << endl;
+                    cerr << "Elements above median: " << elems_above
+                         << ", elements below: " << elems_below
+                         << ", elements equal: " << elems_equal << endl;
                     cerr << hist << endl;
                     cerr << "***" << endl;
                 }
@@ -126,7 +137,7 @@ void medianTest(){
 template <int B>
 void normalizationTest() {
 
-    string format("Checking whether we get a proper median from a histogram<%d>... ");
+    string format("Checking for proper normalization of a histogram<%d>... ");
     size_t size = snprintf(nullptr, 0, format.c_str(), B) + 1; // Extra space for '\0'
     unique_ptr<char[]> buf(new char[size]);
     snprintf(buf.get(), size, format.c_str(), B);
@@ -136,22 +147,32 @@ void normalizationTest() {
     check(buf.get(), []() {
         Histogram<B> hist;
 
-        int no_samples = *inRange<int>(1,1000);
+        int no_samples = *inRange<int>(1,10000);
 
         for (unsigned long i = 0; i < no_samples; i++) {
             double val = *inRange<int>(0, 100);
             hist += val / 100;
         }
 
-        hist.normalize();
+        array<double, B> norm = hist.normalized();
 
         bool is_ok = true;
-        for (unsigned long b = 0; b < B && is_ok; b++) {
-            is_ok = hist.bins[b] >= 0 && hist.bins[b] <= 1.0;
-        }
-        double suspected_how_much = 1.0 / no_samples;
-        is_ok = is_ok && std::abs(hist.how_much - suspected_how_much) < 0.0001;
+        double sum = 0;
+        unsigned long b = 0;
 
+        for (; b < B && is_ok; b++) {
+            sum += norm[b];
+            is_ok = norm[b] >= 0 && norm[b] <= 1.0;
+        }
+        if (!is_ok){
+            cerr << "Bin " << b << "  was not in 0.0,1.0 range: " << hist.bins[b] << endl;
+        }
+
+
+        if (is_ok && std::abs(sum - 1.0) > 0.0001){
+            is_ok = false;
+            cerr << "Total sum of bins is not equal to 1.0: " << sum << endl;
+        }
 
         return is_ok;
     });
