@@ -1,0 +1,14 @@
+sentence, animal_prob
+"A mouse.", 0.5
+"The mouse!", 0.5
+"Catch that mouse!", 0.7
+"Whether you know it or not, a mouse can be used to solve this riddle.", 0.7
+"Wow, lad, that mouse is great.", 0.4
+"Click on the mouse and then select the option you want, by right-clicking on the solution.", 0.0
+"You have to be very tender to your mouse, it is easily scared.", 0.99
+"No, I don't want to use the mouse anymore.", 0.1
+"What a cute little mouse!", 0.75
+"How's your mouse doing ?", 0.6
+"The mouse is a rodent, often considered to be a pest.", 1.0
+"Did you feed your mouse ?", 0.99
+"I have my mouse for a pet.", 0.95

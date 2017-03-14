@@ -218,7 +218,5 @@ NeuralNetwork<I,M,O> gradient_descent( const NeuralNetwork<I,M,O> & network
         ix +=1;
     }
 
-
     return current;
-
 }

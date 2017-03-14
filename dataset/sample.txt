@@ -11,3 +11,4 @@
 "The mouse is a rodent, often considered to be a pest."
 "Did you feed your mouse ?"
 "I have my mouse for a pet."
+"That mouse is not a computer mouse!"

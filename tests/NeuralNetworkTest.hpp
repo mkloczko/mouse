@@ -266,4 +266,6 @@ void gradientDescent(unsigned long max_iters){
     cerr << "The maximum difference found for the cost functions was: " << max_difference << endl;
 }
 
+void neuralNetworkTestSuite();
+
 #endif //CHALLENGE_NEURALNETWORKTEST_HPP
