@@ -3,9 +3,10 @@ project(challenge)
 
 #add_subdirectory(eigen)
 include_directories(${CMAKE_SOURCE_DIR}/eigen)
+include_directories(${CMAKE_SOURCE_DIR}/fast-cpp-csv-parser)
 add_subdirectory(rapidcheck)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEIGEN_MPL2_ONLY -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG -DEIGEN_MPL2_ONLY -DCSV_IO_NO_THREAD -std=c++11")
 
 
 

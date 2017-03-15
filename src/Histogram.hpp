@@ -23,15 +23,18 @@ struct Histogram{
     array<double,Bins> normalized(){
 
         array<double,Bins> ret;
+        ret.fill(0);
 
-        for(unsigned long i = 0; i < Bins; i++){
-            ret[i] = (double)bins[i]/(double)size;
+        if(size > 0){
+            for(unsigned long i = 0; i < Bins; i++){
+                ret[i] = (double)bins[i]/(double)size;
+            }
         }
 
         return ret;
     }
 
-    double median(){
+    double median() const{
         unsigned long to_take  = 2 - (size % 2);
         int counter = (size+1)/2;
 
@@ -91,9 +94,6 @@ std::ostream& operator<<(std::ostream& os, const Histogram<B>& obj)
     }
     return os;
 }
-
-template <int Bins>
-using ProbHistogram = Histogram<Bins>;
 
 //void addTo(Histogram<Bins> & hist, double which, double max_bin)
 

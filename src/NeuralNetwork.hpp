@@ -199,6 +199,7 @@ NeuralNetwork<I,M,O> gradient_descent( const NeuralNetwork<I,M,O> & network
     current.weights_0 -= alpha*thetas.weights_0;
     current.weights_1 -= alpha*thetas.weights_1;
 
+
     unsigned long ix = 0;
     bool converged = true;
     converged = converged && (current.weights_0 - prev.weights_0).array().abs().maxCoeff() < epsilon;
