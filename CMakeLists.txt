@@ -13,6 +13,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG -DEIGEN_MPL2_ONLY -DCSV_IO_NO_TH
 set(NNETWORK_FILES src/NeuralNetwork.hpp src/WordDictionary.hpp src/Histogram.hpp)
 set(NNETWORK_TEST  tests/test.cpp tests/NeuralNetworkTest.hpp tests/HistogramTest.hpp tests/HistogramTest.cpp tests/NeuralNetworkTest.cpp)
 
-add_executable(challenge ${NNETWORK_FILES} main.cpp)
 add_executable(tests     ${NNETWORK_FILES} ${NNETWORK_TEST})
 target_link_libraries(tests rapidcheck)
+
+add_executable(train     ${NNETWORK_FILES} train.cpp    )
+add_executable(challenge ${NNETWORK_FILES} challenge.cpp)
+

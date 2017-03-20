@@ -4,6 +4,6 @@
 #include "NeuralNetworkTest.hpp"
 #include "HistogramTest.hpp"
 int main(){
-    histogramTestSuite();
-//    neuralNetworkTestSuite();
+//    histogramTestSuite();
+    neuralNetworkTestSuite();
 }

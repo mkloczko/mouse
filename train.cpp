@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <fstream>
 
 
 #include "src/Histogram.hpp"
@@ -53,9 +54,19 @@ tuple<TrainingSet<11>, TrainingSet<1>> neuralFood
 
 
 
-int main() {
+int main(int argc, const char ** argv) {
+
 
     string filename("dataset/sample.csv");
+    string trained("trained/sample11-12-1.nn");
+
+    if (argc >= 2){
+        filename = string(argv[1]);
+    }
+    if (argc >= 3){
+        trained = string(argv[2]);
+    }
+
 
     using Dataset = vector<tuple<string,double>>;
     Dataset dataset;
@@ -129,6 +140,26 @@ int main() {
     double cost_evaluation = costFunction(learned, get<0>(evaluation_food), get<1>(evaluation_food));
 
     cout << cost_training << ", " << cost_evaluation << endl;
+
+    std::ofstream file(trained);
+    if (file.is_open())
+    {
+//        file << learned.weights_0 << "\n" << learned.weights_1 << endl;
+        for(unsigned long i = 0; i < network.weights_0.size(); i++){
+            file << learned.weights_0(i) << " ";
+        }
+        file << endl;
+        for(unsigned long i = 0; i < network.weights_1.size(); i++){
+            file << learned.weights_1(i) << " ";
+        }
+        file << endl;
+        std::for_each(dict.begin(), dict.end(), [&](const pair<string, double>& k_v){
+            file << k_v.first << " " << k_v.second << endl;
+            return k_v;
+        });
+    }
+
+    file.close();
 
 #ifdef DEBUG
     std::for_each(dict.begin(), dict.end(), [](const pair<string, double> & pair){

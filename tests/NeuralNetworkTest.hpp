@@ -82,15 +82,21 @@ void gradientCheck(){
                 diff.weights_0 = numerical.weights_0 - backprop.weights_0;
                 diff.weights_1 = numerical.weights_1 - backprop.weights_1;
 
+                NeuralNetwork<I,M,O> diff2;
+                diff2.weights_0 = numerical.weights_0 + backprop.weights_0;
+                diff2.weights_1 = numerical.weights_1 + backprop.weights_1;
+
                 bool is_ok = true;
-                double max_diff = std::numeric_limits<double>::min();
+                double diff_w0 = (diff.weights_0).norm()/(diff2.weights_0).norm();
+                double diff_w1 = (diff.weights_1).norm()/(diff2.weights_1).norm();
+
+                double max_diff = std::max(diff_w0, diff_w1);
+
                 for (unsigned long i = 0; i < diff.weights_0.size() && is_ok; i++){
-                    max_diff = std::max(abs(diff.weights_0(i)),max_diff);
                     is_ok = abs(diff.weights_0(i)) < 0.001;
                 }
 
                 for (unsigned long i = 0; i < diff.weights_1.size() && is_ok; i++){
-                    max_diff = std::max(abs(diff.weights_1(i)),max_diff);
                     is_ok = abs(diff.weights_1(i)) < 0.001;
                 }
                 error = std::max(error, max_diff);
@@ -171,15 +177,21 @@ void gradientCheckRegularised(){
                 diff.weights_0 = numerical.weights_0 - backprop.weights_0;
                 diff.weights_1 = numerical.weights_1 - backprop.weights_1;
 
+                NeuralNetwork<I,M,O> diff2;
+                diff2.weights_0 = numerical.weights_0 + backprop.weights_0;
+                diff2.weights_1 = numerical.weights_1 + backprop.weights_1;
+
                 bool is_ok = true;
-                double max_diff = std::numeric_limits<double>::min();
+                double diff_w0 = (diff.weights_0).norm()/(diff2.weights_0).norm();
+                double diff_w1 = (diff.weights_1).norm()/(diff2.weights_1).norm();
+
+                double max_diff = std::max(diff_w0, diff_w1);
+
                 for (unsigned long i = 0; i < diff.weights_0.size() && is_ok; i++){
-                    max_diff = std::max(abs(diff.weights_0(i)),max_diff);
                     is_ok = abs(diff.weights_0(i)) < 0.001;
                 }
 
                 for (unsigned long i = 0; i < diff.weights_1.size() && is_ok; i++){
-                    max_diff = std::max(abs(diff.weights_1(i)),max_diff);
                     is_ok = abs(diff.weights_1(i)) < 0.001;
                 }
 
