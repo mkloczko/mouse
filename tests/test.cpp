@@ -3,7 +3,9 @@
 //
 #include "NeuralNetworkTest.hpp"
 #include "HistogramTest.hpp"
+#include "Histogram2DTest.hpp"
 int main(){
-//    histogramTestSuite();
+    histogramTestSuite();
+    histogram2DTestSuite();
     neuralNetworkTestSuite();
 }

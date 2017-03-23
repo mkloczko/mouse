@@ -62,8 +62,8 @@ constexpr Layer<N+1> addBias(const Layer<N> & in, const double & constant = 1){
 template <int Input, int Middle, int Output>
 struct NeuralNetwork{
 
-    Weights<Middle, Input+1> weights_0 = 0.001  * Weights<Middle, Input+1>::Random();
-    Weights<Output, Middle+1> weights_1 = 0.001 * Weights<Output, Middle+1>::Random();
+    Weights<Middle, Input+1>  weights_0 = 0.12  * Weights<Middle, Input+1>::Random();
+    Weights<Output, Middle+1> weights_1 = 0.12 * Weights<Output, Middle+1>::Random();
 
     Layer<Output>       compute(Layer<Input>       input) const{
         return forwardProp(forwardProp(input, weights_0), weights_1);
@@ -103,6 +103,7 @@ NeuralNetwork<I,M,O> backpropagation(const NeuralNetwork<I,M,O> & network,
                               TrainingSet<I> training,
                               TrainingSet<O> values,
                               double lambda = 0){
+
     if (training.cols() != values.cols()){
         throw std::invalid_argument("The number of X's is not equal to number of Y's.");
     }

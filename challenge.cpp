@@ -55,7 +55,7 @@ int main(int argc, const char ** argv) {
     using Dataset = vector<tuple<string,double>>;
     Dataset dataset;
     try {
-        dataset = loadDataset(filename);
+        dataset = loadSimpleDataset(filename);
     } catch(io::error::can_not_open_file e) {
         cerr << e.what() << endl;
         return 1;

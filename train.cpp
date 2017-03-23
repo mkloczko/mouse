@@ -71,7 +71,7 @@ int main(int argc, const char ** argv) {
     using Dataset = vector<tuple<string,double>>;
     Dataset dataset;
     try {
-        dataset = loadDataset(filename);
+        dataset = loadSimpleDataset(filename);
     } catch(io::error::can_not_open_file e) {
         cerr << e.what() << endl;
         return 1;
@@ -121,7 +121,7 @@ int main(int argc, const char ** argv) {
                                         );
 
 
-    WordDictionary dict = datasetToDict(dictionary_dataset);
+    WordDictionary dict = simpleDatasetToDict(dictionary_dataset);
 
     tuple<TrainingSet<11>, TrainingSet<1>> training_food   = neuralFood(training_dataset  , dict);
     tuple<TrainingSet<11>, TrainingSet<1>> evaluation_food = neuralFood(evaluation_dataset, dict);
