@@ -4,7 +4,7 @@ The mouse ! ;;0.5;;0.5
 Catch that mouse !;Catch;0.7;Catch;0.3
 Whether you know it or not , a mouse can be used to solve this riddle .;used riddle; 0.4; used riddle; 0.6
 Wow , lad , that mouse is great .;great;0.4;great;0.5
-Click on the mouse and then select the option you want , by right-clicking on the solution .;; 0.0;Click select option;1.0
+Click on the mouse and then select the option you want , by right-clicking on the solution .;; 0.0;Click select option right-clicking;1.0
 You have to be very tender to your mouse, it is easily scared .;tender scared; 1;;0
 No, I don't want to use the mouse anymore .;; 0.1;use;0.9
 What a cute little mouse !;cute little; 0.75;little;0.4
@@ -13,3 +13,6 @@ The mouse is a rodent , often considered to be a pest .;rodent pest;1.0;;0.0
 Did you feed your mouse ?;feed; 0.99;;0.01
 I have my mouse for a pet .;pet;0.95;;0.05
 A computer mouse is a pointing device that detects two-dimensional motion relative to a surface .;; 0.0;computer pointing device detects two-dimensional motion surface;1.0
+I prefer to use the mouse instead of the touch-pad;;0.0;use touch-pad; 1.0
+Wow, did you draw that using a mouse ?;; 0.0; draw using mouse; 1.0
+I would love to get a new gaming mouse .;; 0.0; gaming ; 1.0
