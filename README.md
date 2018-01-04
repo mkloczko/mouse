@@ -1,6 +1,7 @@
-# Mouse context problem
+## The problem
 
-An approach to computer mouse vs animal mouse linguistic problem.
+The problem was to solve whether in a given sentence the mouse is a computer device or an animal. 
+
 
 ## Idea
 
